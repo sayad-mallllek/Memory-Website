@@ -1,0 +1,58 @@
+/* @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200&display=swap'); */
+
+/* @font-face {
+  font-family: 'oswaldextralight';
+  src: url('./Resources/Fonts/Oswald/oswald-extralight-webfont.woff2') format('woff2'),
+       url('./Resources/Fonts/Oswald/oswald-extralight-webfont.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+
+} */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+body {
+  margin: 0;
+  padding: 0;
+  background-color: darkblue;
+  background-size: cover;
+ 
+}
+
+.Oswald{
+  font-family: 'Oswald', sans-serif;
+}
+
+.navbar-background{
+  background:linear-gradient(#29a2d6, #238dba);
+  background-color:#356fcc /*this your primary color*/
+}
+
+.post-container{
+  background-color: #DEDAF4;
+  border: 5px #040F17;
+  border-radius: 3px;
+  /* border: 10px solid black;
+  background: linear-gradient(to top, rgba(#cffffe, 0.3), rgba(#f9f7d9, 0.3), rgba(#fce2ce, 0.3), rgba(#ffc1f3, 0.3));
+  border-image: url("data:image/svg+xml;charset=utf-8,%3Csvg width='100' height='100' viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'%3E %3ClinearGradient id='g' x1='0%25' y1='0%25' x2='0%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23cffffe' /%3E%3Cstop offset='25%25' stop-color='%23f9f7d9' /%3E%3Cstop offset='50%25' stop-color='%23fce2ce' /%3E%3Cstop offset='100%25' stop-color='%23ffc1f3' /%3E%3C/linearGradient%3E %3Cpath d='M1.5 1.5 l97 0l0 97l-97 0 l0 -97' stroke-linecap='square' stroke='url(%23g)' stroke-width='3'/%3E %3C/svg%3E") 1; */
+}
+.border-shadow{
+  transition: box-shadow 0.25s;
+}
+.border-shadow:hover{
+  box-shadow: 0px 1px 7px 1px #333030;
+
+}
+
+Card {
+  background-color: #DEDAF4;
+}
+/* .bold {
+  font-weight: bold;
+} */
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
