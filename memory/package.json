@@ -12,6 +12,8 @@
     "bcrypt": "^5.0.1",
     "bootstrap": "^5.1.1",
     "form-data": "^2.3.3",
+    "joi": "^17.4.2",
+    "joi-browser": "^13.4.0",
     "lodash": "^4.17.21",
     "react": "^17.0.2",
     "react-bootstrap": "^2.0.0-rc.0",

@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
+import { getPost, updatePost, deletePost } from "../Services/PostService";
+
 import { Button, Card, Form, Row, Col } from "react-bootstrap";
 import { MdModeEdit } from "react-icons/md";
-import { useParams } from "react-router-dom";
-import { getPost } from "../Services/PostService";
 import { TiDelete } from "react-icons/ti";
+
+import Comments from "./Comments";
+import UpdateForm from "./UpdateForm";
 import FormData from "form-data";
-import { updatePost, deletePost } from "../Services/PostService";
 
 const PostDetail = () => {
   const [post, setPost] = useState([]);
@@ -17,6 +19,7 @@ const PostDetail = () => {
     getPost(id)
       .then((data) => {
         setPost(data);
+        console.log("From parent", data.comments);
       })
       .catch((err) => {
         console.log("Error Getting Data");
@@ -47,7 +50,6 @@ const PostDetail = () => {
   const handleDelete = (event) => {
     const response = deletePost(id);
     history.replace("/");
-    
   };
 
   const toggleEdit = () => {
@@ -62,9 +64,13 @@ const PostDetail = () => {
       >
         <MdModeEdit onClick={toggleEdit} className="position-absolute" />
 
-        <Row>
-          <Col xs={6}>
+        <Row className="h-100">
+          <Col
+            xs={6}
+            className="d-flex align-items-center justify-content-center"
+          >
             <Card.Img
+              className="w-100"
               variant="git commit -mtop"
               src={post.img}
               alt={post.img}
@@ -75,49 +81,21 @@ const PostDetail = () => {
           <Col xs={6}>
             <Card.Body style={{ height: "100%" }}>
               {editable ? (
-                <React.Fragment>
-                  <TiDelete
-                    className="m-1"
-                    style={{ zIndex: 2 }}
-                    onClick={() => {
-                      console.log("Click!");
-                    }}
-                  />
-                  <Form onSubmit={handleSubmit}>
-                    <Card.Title>
-                      <Form.Control
-                        name="title"
-                        type="text"
-                        value={post.title}
-                        onChange={handleChange}
-                      />
-                    </Card.Title>
-                    <Card.Text>
-                      <Form.Control
-                        name="text"
-                        as="textarea"
-                        rows={5}
-                        value={post.text}
-                        onChange={handleChange}
-                      />
-                    </Card.Text>
-                    <Button className="mr-1" variant="primary" type="submit">
-                      Update
-                    </Button>
-                    <Button
-                      className="ml-1"
-                      variant="danger"
-                      type="button"
-                      onClick={handleDelete}
-                    >
-                      Delete
-                    </Button>
-                  </Form>
-                </React.Fragment>
+                <UpdateForm
+                  post={post}
+                  handleSubmit={handleSubmit}
+                  handleChange={handleChange}
+                  handleDelete={handleDelete}
+                />
               ) : (
                 <React.Fragment>
                   <Card.Title>{post.title}</Card.Title>
                   <Card.Text>{post.text}</Card.Text>
+                  {post.comments ? (
+                    <Comments Comments={post.comments} postId={id} />
+                  ) : (
+                    <h1>Loading Comments...</h1>
+                  )}
                 </React.Fragment>
               )}
             </Card.Body>

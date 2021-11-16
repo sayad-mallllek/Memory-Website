@@ -2,18 +2,7 @@ const mongoose = require("mongoose");
 const express = require("express");
 const router = express.Router();
 const { Post, validatePost, validateImage } = require("../models/post");
-var multer = require("multer");
-const path = require("path");
-
-var storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "../memory/public/Images");
-  },
-  filename: function (req, file, cb) {
-    cb(null, Date.now() + path.extname(file.originalname));
-  },
-});
-var upload = multer({ storage: storage });
+const { uploadImage } = require("../models/multer");
 
 router.get("/", async (req, res) => {
   console.log("Getting all posts...");
@@ -27,19 +16,29 @@ router.get("/:id", async (req, res) => {
   res.send(post[0]);
 });
 
-router.post("/", upload.single("img"), async (req, res) => {
-  // let { error } = validatePost(req.body);
-  // if (error) {
-  //   return res.status(400).send(error.details[0].message);
-  // }
+router.post("/:id/comments", async (req, res) => {
+  const comment = req.body.comment;
+  const id = req.params.id;
+  console.log("Posting comment to post of id: ", id);
+  console.log("The comment:", comment);
+  const result = await Post.findByIdAndUpdate(
+    id,
+    {
+      $push: { comments: comment },
+    },
+    { new: true }
+  );
+  console.log(result.comments);
+});
 
-  // let { imageError } = validateImage(req.file);
-  // if (imageError) {
-  //   return res.status(400).send(ImageError.details[0].message);
-  // }
+router.post("/", uploadImage, async (req, res) => {
 
-  console.log("Adding new post...");
-  console.log(req.file);
+  let { error } = validatePost({ title: req.body.title, text: req.body.text });
+  if (error) {
+    return res.status(400).send(error.details[0].message);
+  }
+
+
   const post = new Post({
     title: req.body.title,
     text: req.body.text,
@@ -47,10 +46,21 @@ router.post("/", upload.single("img"), async (req, res) => {
     comments: [],
   });
 
+
+  uploadImage(req, res, (err) => {
+    if (err || !req.file) {
+      console.log("Converting imageError");
+      return res.status(400).send("Invalid Image submission!");
+    }
+  });
+
+  console.log("Adding new post...");
+
   post
     .save()
     .then((data) => {
-      res.status(200).send(data);
+      res.status(200).send("Success");
+      console.log("About to add");
     })
     .catch((err) => {
       res.status(500).send({
@@ -89,7 +99,7 @@ router.delete("/:id", async (req, res) => {
   if (!post) {
     return res.status(404).send("Post with given ID does not exist!");
   }
-  res.send(post);
+  res.status(200).send(post);
 });
 
 module.exports = router;
