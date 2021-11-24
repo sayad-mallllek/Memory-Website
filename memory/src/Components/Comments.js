@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Comment from "./Comment";
 import PostComment from "./PostComment";
 import { sendComment } from "../Services/PostService";
+import { validateComment } from "../Services/FormService";
 import { Container } from "@material-ui/core";
 
 
@@ -14,9 +15,22 @@ const Comments = (props) => {
   }, [setComments]);
 
   const handleSubmit = async (event) => {
-    const postId = props.postId;
-    const response = sendComment(userComment, postId);
     event.preventDefault();
+    const {error} = validateComment(userComment);
+    if(error){
+      console.log("Comment must not be empty!");
+      return;
+    }
+    const originalComments = [...comments];
+    const newComments = [...comments, userComment.comment];
+    const postId = props.postId;
+    setComments(newComments);
+    event.target.reset();
+    // console.log(comments);
+    const response = await sendComment(userComment, postId);
+    if(response.data != "Success"){
+      setComments(originalComments);
+    }
   };
 
   const handleChange = (event) => {
@@ -27,7 +41,7 @@ const Comments = (props) => {
   };
 
   return (
-    <div>
+    <div className="h-100">
       <Container className="mt-1 p-1">
         {comments ? (
           comments.map((comment) => (

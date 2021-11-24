@@ -1,33 +1,34 @@
-const mongoose = require('mongoose');
-const express=require('express');
-var cors = require('cors')
+const config = require("config");
+const express = require("express");
+const winston = require("winston");
 // var bodyParser = require('body-parser')
+const { PORT, dbURL: URL } = require("./config");
+const app = express();
 
-const {PORT, dbURL: URL} = require('./config');
-
-const app=express();
-
-// app.use(bodyParser.json());
-// app.use(bodyParser.urlencoded({
-// 	extended: true
-//   }));
-app.use(function(req, res, next) {
-	res.header("Access-Control-Allow-Origin", "*");
-	res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
-	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
-	next();
-  });
-app.use(cors());
-const posts=(require('./routes/posts'));
-
-mongoose.connect(URL)
- .then(() => console.log('Connected…'))
- .catch(err => console.error('Connection failed…'))
-
-app.listen(PORT, function() {
-	console.log("Server is listening at port:" + PORT);
+process.on("uncaughtException", (ex) => {
+  console.log("WE GOT AN UNCAUGHT EXCEPTION");
+  console.log(ex.message);
+  winston.error(ex.message, ex);
+  process.exit(1);
 });
 
-app.use(express.json());
+process.on("unhandledRejection", (ex) => {
+  console.log("WE GOT AN UNHANDLED REJECTION");
+  console.log(ex.message);
+  winston.error(ex.message, ex);
+  process.exit(1);
+});
 
-app.use('/api/posts', posts);
+winston.add(new winston.transports.File({ filename: "logfile.log" }));
+
+
+require('./startup/routes')(app);
+require('./startup/db')();
+
+if (!config.get("jwtPrivateKey")) {
+  throw new Error("FATAL ERROR: JWT private key is not defined!")
+}
+
+app.listen(PORT, function () {
+  console.log("Server is listening at port:" + PORT);
+});

@@ -1,0 +1,17 @@
+{"level":"info","message":"Connected…"}
+{"level":"info","message":"Connected…"}
+{"level":"info","message":"Connected…"}
+{"level":"error","message":"conosle is not defined conosle is not defined","stack":"ReferenceError: conosle is not defined\n    at C:\\Users\\bob\\Documents\\React\\Memory\\memory-backend\\startup\\db.js:6:5\n    at processTicksAndRejections (internal/process/task_queues.js:97:5)"}
+{"level":"info","message":"Connected…"}
+{"level":"info","message":"Connected..."}
+{"level":"info","message":"Connected..."}
+{"level":"info","message":"Connected..."}
+{"level":"info","message":"Connected..."}
+{"level":"info","message":"Connected..."}
+{"level":"info","message":"Connected..."}
+{"level":"info","message":"Connected..."}
+{"level":"info","message":"Connected..."}
+{"level":"info","message":"Connected..."}
+{"level":"info","message":"Connected..."}
+{"level":"info","message":"Connected..."}
+{"level":"info","message":"Connected..."}

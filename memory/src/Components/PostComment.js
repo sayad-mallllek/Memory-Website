@@ -2,15 +2,16 @@ import React from 'react'
 import { Form, Button, Row, Col } from "react-bootstrap";
 
 const PostComment = ({handleSubmit, handleChange}) => {
+    const bottomStyle = { bottom : "1vh"};
     return (
-        <Form onSubmit={handleSubmit}>
-        <Row>
-          <Col xs={5}>
+        <Form className="" onSubmit={handleSubmit}>
+        <Row className="position-absolute" style={bottomStyle}>
+          <Col xs={10}>
             <Form.Control name="comment" type="text" onChange={handleChange} />
           </Col>
           <Col xs={2}>
             <Button
-              className="ml-1 form-control-sm"
+              className="form-control-sm"
               variant="primary"
               type="submit"
             >

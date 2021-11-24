@@ -32,6 +32,7 @@ const PostForm = () => {
       [event.target.name]: event.target.value,
     });
   };
+
   const handleFileChange = (event) => {
     setFormValue({
       ...formValue,

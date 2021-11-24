@@ -9,6 +9,7 @@ import NavBar from "./NavBar";
 import Posts from "./Posts";
 import PostDetail from "./PostDetail";
 import PostForm from "./PostForm";
+import UserForm from "./UserForm";
 
 export default class ActivityPage extends Component {
   render() {
@@ -23,6 +24,7 @@ export default class ActivityPage extends Component {
               path="/posts/:id"
               component={PostDetail}
             />
+            <Route exact path="/signup" component={UserForm} />
             <Redirect from="/" exact to="/posts" />
           </Switch>
         </Router>
