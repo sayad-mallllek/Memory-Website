@@ -70,7 +70,7 @@ router.post("/:id/comments", asyncMiddleware(async (req, res) => {
   console.log(result.comments);
 }));
 
-router.put("/:id", asyncMiddleware(async (req, res) => {
+router.put("/:id",auth, asyncMiddleware(async (req, res) => {
   console.log(`Updating post with id: "${req.params.id}"...`);
   console.log(req.body);
   let { error } = validatePost(req.body);
@@ -86,10 +86,10 @@ router.put("/:id", asyncMiddleware(async (req, res) => {
     },
     { new: true }
   );
-
   if (!post) {
     return res.status(404).send("Post with given ID does not exist!");
   }
+  console.log(`Done updating post with with id: ${req.params.id}`);
 
   res.send(post);
 }));

@@ -1,23 +1,20 @@
 import React, { useState, useEffect } from "react";
-import { useHistory } from "react-router-dom";
-import { Form, Button } from "react-bootstrap";
+import { useHistory, Link } from "react-router-dom";
+import { Form, Button, Alert } from "react-bootstrap";
 import FormData from "form-data";
 import { createUser } from "../Services/UserService";
 
-const UserForm = () => {
+const UserRegisterForm = () => {
   const history = useHistory();
   const [formValue, setFormValue] = useState({
     username: "",
     email: "",
     password: "",
   });
+  const [signupError, setSignupError] = useState(false);
+  const [responseMessage, setResponseMessage] = useState("");
 
   const handleSubmit = async (event) => {
-    // const userFormData = new FormData();
-    // userFormData.append("username", formValue.username);
-    // userFormData.append("email", formValue.email);
-    // userFormData.append("password", formValue.password);
-
     const userFormData = {
       username: formValue.username,
       email: formValue.email,
@@ -26,10 +23,13 @@ const UserForm = () => {
     event.preventDefault();
 
     const response = await createUser(userFormData);
-    if (response.status == 200) {
-      history.replace("/");
-      console.log("Congrats!, User Created!");
-    } else console.log("Response", response);
+    if (response.status === 200) {
+      window.location.replace("/");
+    } else {
+      console.log(response);
+      setSignupError(true);
+      setResponseMessage(response.substring(response.indexOf('[')+1,response.indexOf(']')));
+    }
   };
 
   const handleChange = (event) => {
@@ -42,11 +42,20 @@ const UserForm = () => {
   return (
     <Form className="mt-5 p-5" onSubmit={handleSubmit}>
       <Form.Group className="mb-3" controlId="formPostTitle">
+        {signupError && (
+          <Alert
+            variant="danger"
+            onClose={() => setSignupError(false)}
+            dismissible
+          >
+            {responseMessage}
+          </Alert>
+        )}
         <Form.Label>Username</Form.Label>
         <Form.Control
           name="username"
           type="text"
-          placeholder="Enter Post Title"
+          placeholder="Enter Username"
           onChange={handleChange}
         />
       </Form.Group>
@@ -55,7 +64,7 @@ const UserForm = () => {
         <Form.Control
           name="email"
           type="text"
-          placeholder="Enter Post Title"
+          placeholder="Enter Email"
           onChange={handleChange}
         />
       </Form.Group>
@@ -64,15 +73,17 @@ const UserForm = () => {
         <Form.Control
           name="password"
           type="password"
-          placeholder="Enter Post Title"
+          placeholder="Enter Password"
           onChange={handleChange}
         />
       </Form.Group>
       <Button variant="primary" type="submit">
-        Create
+        SignUp
       </Button>
+      <br />
+      <Link to="/login">Already have an account?</Link>
     </Form>
   );
 };
 
-export default UserForm;
+export default UserRegisterForm;

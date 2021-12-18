@@ -19,7 +19,6 @@ const PostDetail = () => {
     getPost(id)
       .then((data) => {
         setPost(data);
-        console.log("From parent", data.comments);
       })
       .catch((err) => {
         console.log("Error Getting Data");
@@ -33,11 +32,12 @@ const PostDetail = () => {
     //   for (var pair of updateFormData.entries()) {
     //     console.log(pair[0]+ ', ' + pair[1]);
     // }
+    event.preventDefault();
     const postToSend = { title: post.title, text: post.text };
-    const response = updatePost(postToSend, id);
+    const response = await updatePost(postToSend, id);
+
     setEditable(false);
     console.log(post);
-    event.preventDefault();
   };
 
   const handleChange = (event) => {

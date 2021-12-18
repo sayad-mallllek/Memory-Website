@@ -15,3 +15,23 @@
 {"level":"info","message":"Connected..."}
 {"level":"info","message":"Connected..."}
 {"level":"info","message":"Connected..."}
+{"level":"info","message":"Connected..."}
+{"level":"info","message":"Connected..."}
+{"level":"info","message":"Connected..."}
+{"level":"info","message":"Connected..."}
+{"level":"info","message":"Connected..."}
+{"level":"info","message":"Connected..."}
+{"level":"info","message":"Connected..."}
+{"level":"info","message":"Connected..."}
+{"level":"info","message":"Connected..."}
+{"level":"info","message":"Connected..."}
+{"level":"info","message":"Connected..."}
+{"level":"info","message":"Connected..."}
+{"level":"info","message":"Connected..."}
+{"level":"info","message":"Connected..."}
+{"level":"info","message":"Connected..."}
+{"level":"info","message":"Connected..."}
+{"level":"info","message":"Connected..."}
+{"level":"info","message":"Connected..."}
+{"level":"error","message":"connect ECONNREFUSED 127.0.0.1:27017 connect ECONNREFUSED 127.0.0.1:27017","reason":{"compatible":true,"heartbeatFrequencyMS":10000,"localThresholdMS":15,"servers":{},"stale":false,"type":"Unknown"},"stack":"MongooseServerSelectionError: connect ECONNREFUSED 127.0.0.1:27017\n    at NativeConnection.Connection.openUri (C:\\Users\\bob\\Documents\\React\\Memory\\memory-backend\\node_modules\\mongoose\\lib\\connection.js:797:32)\n    at C:\\Users\\bob\\Documents\\React\\Memory\\memory-backend\\node_modules\\mongoose\\lib\\index.js:330:10\n    at C:\\Users\\bob\\Documents\\React\\Memory\\memory-backend\\node_modules\\mongoose\\lib\\helpers\\promiseOrCallback.js:32:5\n    at new Promise (<anonymous>)\n    at promiseOrCallback (C:\\Users\\bob\\Documents\\React\\Memory\\memory-backend\\node_modules\\mongoose\\lib\\helpers\\promiseOrCallback.js:31:10)\n    at Mongoose._promiseOrCallback (C:\\Users\\bob\\Documents\\React\\Memory\\memory-backend\\node_modules\\mongoose\\lib\\index.js:1151:10)\n    at Mongoose.connect (C:\\Users\\bob\\Documents\\React\\Memory\\memory-backend\\node_modules\\mongoose\\lib\\index.js:329:20)\n    at module.exports (C:\\Users\\bob\\Documents\\React\\Memory\\memory-backend\\startup\\db.js:5:12)\n    at Object.<anonymous> (C:\\Users\\bob\\Documents\\React\\Memory\\memory-backend\\index.js:26:24)\n    at Module._compile (internal/modules/cjs/loader.js:1137:30)"}
+{"level":"info","message":"Connected..."}

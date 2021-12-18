@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
-import { Form, Button } from "react-bootstrap";
+import { Form, Button, Alert } from "react-bootstrap";
 import FormData from "form-data";
 import { sendPost } from "../Services/PostService";
 
@@ -11,6 +11,9 @@ const PostForm = () => {
     text: "",
     img: "",
   });
+  const [signupError, setSignupError] = useState(false);
+  const [responseMessage, setResponseMessage] = useState("");
+
 
   const handleSubmit = async (event) => {
     const postFormData = new FormData();
@@ -22,8 +25,12 @@ const PostForm = () => {
     event.preventDefault();
 
     const response = await sendPost(postFormData);
-    if (response.data == "Success") history.replace("/");
-    else console.log(response);
+    if (response.status == 200) history.replace("/");
+    else {
+      console.log(response);
+      setSignupError(true);
+      setResponseMessage(response.substring(response.indexOf('[')+1,response.indexOf(']')));
+    }
   };
 
   const handleChange = (event) => {
@@ -42,6 +49,15 @@ const PostForm = () => {
 
   return (
     <Form className="mt-5 p-5" onSubmit={handleSubmit}>
+      {signupError && (
+          <Alert
+            variant="danger"
+            onClose={() => setSignupError(false)}
+            dismissible
+          >
+            {responseMessage}
+          </Alert>
+        )}
       <Form.Group className="mb-3" controlId="formPostTitle">
         <Form.Label>Post Title</Form.Label>
         <Form.Control

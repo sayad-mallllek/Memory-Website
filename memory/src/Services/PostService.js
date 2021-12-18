@@ -1,35 +1,39 @@
 import { apiUrl } from "../config.json";
 import axios from "axios";
-import { validateInputText, validateInputFile } from "../Services/FormService";
+import {
+  validateInputText,
+  validateInputFile,
+  validateComment,
+} from "../Services/FormService";
 import FormError from "../Errors/FormError";
+import httpService from "./httpService";
+
+// console.log(auth.getToken());
 
 export const getPosts = async () => {
-  const { data: posts } = await axios.get(`${apiUrl}/posts`);
+  const posts = await httpService.Get(`${apiUrl}/posts`);
   return posts;
 };
 
 export const getPost = async (id) => {
-  const { data: post } = await axios.get(`${apiUrl}/posts/${id}`);
-  // console.log("Got data from ",id," of post: ",post);
+  const post = await httpService.Get(`${apiUrl}/posts/${id}`);
   return post;
 };
 
 export const sendPost = async (post) => {
   try {
     console.log(post);
-    let { error } = validateInputText({ title: post.get("title"), text: post.get("text") });
-    if (error) {
-      return error;
-    }
-    
-    let imageError = validateInputFile(post.get("img"));
-    if (imageError) return imageError;
-    const response = await axios({
-      method: "post",
-      url: apiUrl + "/posts",
-      data: post,
-      headers: { "Content-Type": "multipart/form-data" },
+    let { error } = validateInputText({
+      title: post.get("title"),
+      text: post.get("text"),
     });
+    if (error) {
+      return error.message;
+    }
+
+    let imageError = validateInputFile(post.get("img"));
+    if (imageError) return imageError.message;
+    const response = await httpService.PostMultiPart(`${apiUrl}/posts`, post);
     return response;
   } catch (error) {
     return error;
@@ -38,23 +42,25 @@ export const sendPost = async (post) => {
 
 export const updatePost = async (post, id) => {
   try {
-    console.log("To be updated: ", post);
-    const response = await axios({
-      method: "put",
-      url: apiUrl + "/posts/" + id,
-      data: post,
-      headers: { "Content-Type": "application/json" },
+    let { error } = validateInputText({
+      title: post.title,
+      text: post.text,
     });
+    if (error) {
+      return error.message;
+    }
+
+    const response = await httpService.Put(`${apiUrl}/posts/${id}`, post);
     return response;
   } catch (error) {
+    console.log(error);
     return error;
   }
 };
 
 export const deletePost = async (id) => {
-  console.log("To be deleted: ", id);
   try {
-    const response = await axios.delete(`${apiUrl}/posts/${id}`);
+    const response = await httpService.Delete(`${apiUrl}/posts/${id}`);
     return response;
   } catch (error) {
     return error;
@@ -63,6 +69,10 @@ export const deletePost = async (id) => {
 
 export const sendComment = async (comment, postId) => {
   try {
+    let { error } = validateComment(comment);
+    if (error) {
+      return error.message;
+    }
     const response = await axios({
       method: "post",
       url: apiUrl + "/posts/" + postId + "/comments",

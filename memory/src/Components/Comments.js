@@ -26,7 +26,6 @@ const Comments = (props) => {
     const postId = props.postId;
     setComments(newComments);
     event.target.reset();
-    // console.log(comments);
     const response = await sendComment(userComment, postId);
     if(response.data != "Success"){
       setComments(originalComments);
